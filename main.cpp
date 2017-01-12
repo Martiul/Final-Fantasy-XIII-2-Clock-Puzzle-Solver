@@ -5,20 +5,22 @@
 #include <cstdlib>
 using namespace std;
 
-int clock[20];
 int spaces;
+int clock[20];
+bool activated[20];     // activated describes whether a circle is already activated
+vector <int> combo;     // combo is the current combination
 
-// combo is the current combination
-// activated describes whether a circle is already activated
+
 // currentPos is the current circle the player is on
-void findSolution(vector <int> combo, vector <bool> activated, int currentPos)
+void findSolution(int currentPos)
 {
     int posA,posB;
+
     activated[currentPos] = true;
     combo.push_back(currentPos);
 
-    if (combo.size() == spaces)
-    {
+    // Output combo if finished
+    if (combo.size() == spaces) {
         for (int i = 0; i < spaces; i++)
             cout << combo[i] << " ";
         cout << endl;
@@ -35,9 +37,13 @@ void findSolution(vector <int> combo, vector <bool> activated, int currentPos)
 
     // Try both possibilities
     if (activated[posA] == false)
-        findSolution(combo,activated,posA);
+        findSolution(posA);
     if (activated[posB] == false && posA != posB)
-        findSolution(combo,activated,posB);
+        findSolution(posB);
+
+    // Backtrack
+    activated[currentPos] = false;
+    combo.pop_back();
 }
 
 int main()
@@ -49,8 +55,8 @@ int main()
         system("CLS");
         cout << "Enter the number of spaces: ";
         cin >> spaces;
-        vector <bool> activated(spaces,0);
-        vector <int> combo(0);              // Vector describing the order the circles should be activated
+
+        // Vector describing the order the circles should be activated
 
         cout << "\nStarting from the top going clockwise, enter the values of the spaces:\n";
         for (int i = 0; i < spaces; i++)
@@ -58,7 +64,7 @@ int main()
 
         cout << "\nPossible Combinations:\n";
         for (int i = 0; i < spaces; i++)
-            findSolution(combo,activated,i);
+            findSolution(i);
 
         cout << "Press any key to continue ";
         pause = getche();
