@@ -52,7 +52,7 @@ int main()
 
     while (true)
     {
-        system("CLS");
+        system("CLS");  // Sorry Mac users
         cout << "Enter the number of spaces: ";
         cin >> spaces;
 
